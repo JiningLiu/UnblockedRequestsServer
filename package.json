@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/JiningLiu/UnblockedRequests/issues"
   },
-  "homepage": "https://github.com/JiningLiu/UnblockedRequests#readme"
+  "homepage": "https://github.com/JiningLiu/UnblockedRequests#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.9",
+    "uuid": "^9.0.0"
+  }
 }
