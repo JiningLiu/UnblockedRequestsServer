@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const port = process.env.PORT || (() => {
     const min = Math.ceil(1024);
     const max = Math.floor(65535);
@@ -9,14 +10,12 @@ const port = process.env.PORT || (() => {
 
 const { v4: uuid } = require('uuid');
 
-// const fetch = require('node-fetch');
+const fs = require('fs');
+const logFile = fs.createWriteStream('./logs/log.txt', {
+    flags: 'a',
+});
 
-// const fs = require('fs');
-// const logFile = fs.createWriteStream('./logs/log.txt', {
-//     flags: 'a',
-// });
-
-app.use((req, _res, next) => {
+app.use(async (req, res, next) => {
     const port = req.app.settings.port;
 
     const request = {
@@ -25,39 +24,29 @@ app.use((req, _res, next) => {
         fullHost: req.protocol + '://' + req.get('host') +
             (port == 80 || port == 443 || port == null ? '' : ':' + port) +
             req.path,
-        path: req.url.split('?')[0],
-        paths: req.url.split('?')[0].split('/').filter((path) => path !== ''),
-        params: Object.fromEntries(new URLSearchParams(req.url.split('?')[1])),
+        url: req.url.substring(1),
         timestamp: new Date().toISOString(),
     };
 
     req.log = request;
 
-    // logFile.write(JSON.stringify(request) + '\r\n');
+    logFile.write(JSON.stringify(request) + '\r\n');
 
     console.log('New request:', request);
 
-    // console.log('\nRequest', request.id, 'logged to ../logs/log.txt');
+    console.log('\nRequest', request.id, 'logged to ../logs/log.txt');
 
     console.log('\n========================================\n');
 
-    next();
+    if (isValidURL(request.url) && request.url.length > 0) {
+        const buf = await httpGet(request.url);
+        res.send(buf.toString('utf-8'));
+        next();
+    } else {
+        res.status(502);
+        res.sendFile(path.join(__dirname, './src/502.html'));
+    }
 });
-
-app.get('/', (req, res) => {
-    res.send(req.log);
-});
-
-// app.get('/test', async (_req, res) => {
-//     const json = await fetch(
-//         'CODESPACES_FORWARDED_URL',
-//     )
-//         .then((response) => {
-//             return response.json();
-//         });
-
-//     res.send(json);
-// });
 
 app.listen(port, () => {
     console.log('========================================');
@@ -66,3 +55,43 @@ app.listen(port, () => {
     );
     console.log('========================================\n');
 });
+
+function isValidURL(string) {
+    let url;
+    try { 
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+    return url.protocol === 'http:' || url.protocol === 'https:';
+}
+
+function httpGet(url) {
+    return new Promise((resolve, reject) => {
+        const http = require('http'),
+            https = require('https');
+
+        let client = http;
+
+        if (url.toString().indexOf('https') === 0) {
+            client = https;
+        }
+
+        client.get(url, (resp) => {
+            // deno-lint-ignore prefer-const
+            let chunks = [];
+
+            // A chunk of data has been recieved.
+            resp.on('data', (chunk) => {
+                chunks.push(chunk);
+            });
+
+            // The whole response has been received. Print out the result.
+            resp.on('end', () => {
+                resolve(Buffer.concat(chunks));
+            });
+        }).on('error', (err) => {
+            reject(err);
+        });
+    });
+}
