@@ -1,3 +1,5 @@
+const process = require('process');
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -55,6 +57,12 @@ app.listen(port, () => {
     );
     console.log('========================================\n');
 });
+
+process.on('uncaughtException', function (err) {
+    console.log("\n!!!!!!!!!!! CONNECTION ERROR !!!!!!!!!!!\n")
+    console.log("Uncaught Exception Error: ", err);
+    console.log("\n========================================\n")
+}); 
 
 function isValidURL(string) {
     let url;
