@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JiningLiu/UnblockedRequests#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "node-fetch": "^2.6.9",
     "path": "^0.12.7",

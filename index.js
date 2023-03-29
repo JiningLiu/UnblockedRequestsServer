@@ -10,6 +10,8 @@ const port = process.env.PORT || (() => {
     return process.env.PORT;
 })();
 
+const cors = require('cors');
+
 const { v4: uuid } = require('uuid');
 
 const fs = require('fs');
@@ -17,18 +19,9 @@ const logFile = fs.createWriteStream('./logs/log.txt', {
     flags: 'a',
 });
 
-app.use(async (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-    );
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-Requested-With,content-type',
-    );
-    res.setHeader('Access-Control-Allow-Credentials', true);
+app.use(cors());
 
+app.use(async (req, res, next) => {
     const port = req.app.settings.port;
 
     const request = {
