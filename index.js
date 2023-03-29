@@ -49,7 +49,7 @@ app.use(async (req, res, next) => {
         res.send(
             {
                 req: request,
-                buf: buf,
+                data: buf.toString('utf-8'),
             },
         );
         next();

@@ -1,11 +1,12 @@
 # UnblockedRequests
 ### Make unblocked network requests in JavaScript by using unblocked servers.
 
-❗️ There's nothing useful here yet, but there will be soon.
-
 🚫 This branch contains development versions of UnblockedRequests.
 
 ⚠️ This repo is for the UnblockedRequests server, the client repo will be published once the first full version of UnblockedRequests is released.
+
+## TODO
+- [ ] Add [inliner](https://github.com/remy/inliner) support for requests
 
 ## How does it work?
 UnblockedRequests is a proxy server, and there's 2 parts to it: the client and the server. The client is a JavaScript library that you can use in your browser, and the server is a Node.js server that you can run on your own hardware. The client library will make requests to the server, and the server will make requests to the original server, and then send the response back to the client. The fetch API is used to make the requests on the server and a series of security measures are implemented to prevent abuse. You can run the server on any hardware with Node.js, which means if you have a small number of requests, you can run it on an old Android phone using Termux.
