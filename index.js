@@ -46,7 +46,12 @@ app.use(async (req, res, next) => {
 
     if (isValidURL(request.url) && request.url.length > 0) {
         const buf = await httpGet(request.url);
-        res.send(buf.toString('utf-8'));
+        res.send(
+            {
+                req: request,
+                buf: buf,
+            },
+        );
         next();
     } else {
         res.status(502);
@@ -63,8 +68,8 @@ app.listen(port, () => {
 });
 
 process.on('uncaughtException', function (err) {
-    console.log('\n!!!!!!!!!!! CONNECTION ERROR !!!!!!!!!!!\n');
-    console.log('Uncaught Exception Error: ', err);
+    console.log('!!!!!!!!!!! CONNECTION ERROR !!!!!!!!!!!\n');
+    console.log('Uncaught Exception Error:\n', err);
     console.log('\n========================================\n');
 });
 
