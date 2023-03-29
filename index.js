@@ -18,6 +18,12 @@ const logFile = fs.createWriteStream('./logs/log.txt', {
 });
 
 app.use(async (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept',
+    );
+
     const port = req.app.settings.port;
 
     const request = {
@@ -59,14 +65,14 @@ app.listen(port, () => {
 });
 
 process.on('uncaughtException', function (err) {
-    console.log("\n!!!!!!!!!!! CONNECTION ERROR !!!!!!!!!!!\n")
-    console.log("Uncaught Exception Error: ", err);
-    console.log("\n========================================\n")
-}); 
+    console.log('\n!!!!!!!!!!! CONNECTION ERROR !!!!!!!!!!!\n');
+    console.log('Uncaught Exception Error: ', err);
+    console.log('\n========================================\n');
+});
 
 function isValidURL(string) {
     let url;
-    try { 
+    try {
         url = new URL(string);
     } catch (_) {
         return false;
