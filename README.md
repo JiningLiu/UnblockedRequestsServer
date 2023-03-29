@@ -1,9 +1,20 @@
 # UnblockedRequests
-### Make unblocked network requests in JavaScript by using unblocked servers.
+### Make unblocked network requests in any language by using unblocked servers.
 
-🚫 This branch contains development versions of UnblockedRequests.
+🚫 This branch contains development versions of UnblockedRequestsServer.
 
-⚠️ This repo is for the UnblockedRequests server, the client repo will be published once the first full version of UnblockedRequests is released.
+⚠️ This repo is for the UnblockedRequests Node.js SERVER, for client packages, see the chart below for availability.
+
+### **Official Packages**
+| Version | JavaScript | Swift |
+| ------- | ---------- | ----- |
+| alpha 1.0 | [In Development](https://github.com/JiningLiu/UnblockedRequestsJS) | Planned |
+
+### **Community Packages**
+| Version   | N/A | Other Languages |
+| --------- | --- | --------------- |
+| alpha 1.0 | N/A | [Contact](mailto:jiningdev@gmail.com?subject=Community-made%20Package%20for%20UnblockedRequests) |
+
 
 ## TODO
 - [ ] Add [inliner](https://github.com/remy/inliner) support for requests
