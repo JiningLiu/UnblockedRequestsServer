@@ -58,7 +58,7 @@ app.use(async (req, res, next) => {
                 res.send(
                     {
                         req: request,
-                        data: html,
+                        data: html.toString('urf-8'),
                     },
                 );
             });
