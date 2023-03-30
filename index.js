@@ -50,18 +50,20 @@ app.use(async (req, res, next) => {
         if (req.get('inline') == 'true') {
             const inlineRequest = new Inliner(request.url);
 
-            inlineRequest.on('progress', (event) => {
-                console.log('\n!!!!!!!! INLINER PROGRESS ERROR !!!!!!!!\n');
-                console.log('Inliner Request Progress Event:\n', event);
-                console.log('\n========================================\n');
-            }).on('end', (html) => {
-                res.send(
-                    {
-                        req: request,
-                        data: html.toString('utf-8'),
-                    },
-                );
-            });
+            inlineRequest
+                // .on('progress', (event) => {
+                //     console.log('\n!!!!!!!! INLINER PROGRESS ERROR !!!!!!!!\n');
+                //     console.log('Inliner Request Progress Event:\n', event);
+                //     console.log('\n========================================\n');
+                // })
+                .on('end', (html) => {
+                    res.send(
+                        {
+                            req: request,
+                            data: html.toString('utf-8'),
+                        },
+                    );
+                });
         } else {
             const buf = await httpGet(request.url);
             res.send(
