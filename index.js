@@ -12,6 +12,8 @@ const port = process.env.PORT || (() => {
 
 const cors = require('cors');
 
+const Inliner = require('inliner');
+
 const { v4: uuid } = require('uuid');
 
 const fs = require('fs');
@@ -45,13 +47,31 @@ app.use(async (req, res, next) => {
     console.log('\n========================================\n');
 
     if (isValidURL(request.url) && request.url.length > 0) {
-        const buf = await httpGet(request.url);
-        res.send(
-            {
-                req: request,
-                data: buf.toString('utf-8'),
-            },
-        );
+        if (req.get('inline') == 'true') {
+            const inlineRequest = new Inliner(request.url);
+
+            inlineRequest.on('progress', (event) => {
+                console.log('\n!!!!!!!! INLINER PROGRESS ERROR !!!!!!!!\n');
+                console.log('Inliner Request Progress Event:\n', event);
+                console.log('\n========================================\n');
+            }).on('end', (html) => {
+                res.send(
+                    {
+                        req: request,
+                        data: html,
+                    },
+                );
+            });
+        } else {
+            const buf = await httpGet(request.url);
+            res.send(
+                {
+                    req: request,
+                    data: buf.toString('utf-8'),
+                },
+            );
+        }
+
         next();
     } else {
         res.status(502);

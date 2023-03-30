@@ -1,0 +1,2 @@
+{"id":"98ea9f48-e0c0-460d-a11c-1a5991efa52c","host":"localhost","fullHost":"http://localhost/","url":"","timestamp":"2023-03-30T16:06:06.427Z"}
+{"id":"30e2fdd3-4563-4c1a-aa1a-514c272fb0c4","host":"localhost","fullHost":"http://localhost/favicon.ico","url":"favicon.ico","timestamp":"2023-03-30T16:06:07.407Z"}
