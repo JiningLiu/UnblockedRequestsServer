@@ -60,9 +60,10 @@ app.use(async (req, res, next) => {
                     res.send(
                         {
                             req: request,
-                            data: html.toString('utf-8'),
+                            data: html,
                         },
                     );
+                    next();
                 });
         } else {
             const buf = await httpGet(request.url);
@@ -72,9 +73,8 @@ app.use(async (req, res, next) => {
                     data: buf.toString('utf-8'),
                 },
             );
+            next();
         }
-
-        next();
     } else {
         res.status(502);
         res.sendFile(path.join(__dirname, './src/502.html'));
